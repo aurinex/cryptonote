@@ -7,6 +7,8 @@ import {
   Divider,
 } from "@mui/material";
 
+import { useTheme } from "@mui/material/styles";
+
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
 
@@ -16,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { registerEmail, verifyCode } from "../../services/authService";
 
 export const AuthPage = () => {
+  const theme = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -128,8 +131,12 @@ export const AuthPage = () => {
               variant="contained"
               onClick={sendCode}
               sx={{
-                background: "#000",
-                "&:hover": { background: "#333" },
+                color: theme.palette.background.inversion,
+                background: theme.palette.background.first,
+                "&:hover": {
+                  color: theme.palette.background.first,
+                  background: theme.palette.background.inversion,
+                 },
                 textTransform: "none",
               }}
             >
@@ -157,8 +164,12 @@ export const AuthPage = () => {
               variant="contained"
               onClick={verify}
               sx={{
-                background: "#000",
-                "&:hover": { background: "#333" },
+                color: theme.palette.background.inversion,
+                background: theme.palette.background.first,
+                "&:hover": {
+                  color: theme.palette.background.first,
+                  background: theme.palette.background.inversion,
+                 },
                 textTransform: "none",
               }}
             >

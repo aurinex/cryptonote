@@ -53,10 +53,6 @@ export const router = createBrowserRouter([
 
   {
     path: "verify/:hash",
-    element: (
-      <ProtectedRoute>
-        <VerifyPage />
-      </ProtectedRoute>
-    ),
+    element: <VerifyPage />,
   },
 ]);

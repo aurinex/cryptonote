@@ -21,7 +21,7 @@ export const Header = ({ onDocumentsClick }: any) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const user = useUser();
+  const { user, logout } = useUser();
 
   const active = (path: string) => {
     if (path === "/documents") {
@@ -36,8 +36,8 @@ export const Header = ({ onDocumentsClick }: any) => {
   const tabStyle = (path: string) => ({
     fontSize: 20,
     textTransform: "none",
-    color: "#000",
-    borderBottom: active(path) ? "2px solid #c70000" : "2px solid transparent",
+    color: theme.palette.background.first,
+    borderBottom: active(path) ? `2px solid ${theme.palette.background.first}` : "2px solid transparent",
     borderRadius: 0,
     pb: "2px",
     fontFamily: "Montserrat",
@@ -46,6 +46,7 @@ export const Header = ({ onDocumentsClick }: any) => {
   const { mode, setMode } = useThemeContext();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [userMenuEl, setUserMenuEl] = useState<null | HTMLElement>(null);
 
   const openMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -57,10 +58,14 @@ export const Header = ({ onDocumentsClick }: any) => {
 
   const getThemeIcon = () => {
     if (mode === "light") return <LightModeIcon />;
-
     if (mode === "dark") return <DarkModeIcon />;
-
     return <LaptopIcon />;
+  };
+
+  const handleLogout = () => {
+    setUserMenuEl(null);
+    logout();
+    navigate("/auth");
   };
 
   return (
@@ -74,132 +79,53 @@ export const Header = ({ onDocumentsClick }: any) => {
         background: theme.palette.background.third,
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          gap: "16px",
-          px: "24px",
-        }}
-      >
-        <Button
-          sx={{
-            ...tabStyle("/"),
-            "&:hover": {
-              backgroundColor: "transparent !important",
-            },
-            color: theme.palette.background.seventh,
-          }}
-          onClick={() => navigate("/")}
-          disableRipple={true}
+      <Box sx={{ display: "flex", gap: "16px", px: "24px" }}>
+        <Button sx={{ ...tabStyle("/"), "&:hover": { backgroundColor: "transparent !important" }, color: theme.palette.background.seventh }}
+          onClick={() => navigate("/")} disableRipple
         >
-          <Typography sx={{ color: theme.palette.background.first }}>
-            Создать
-          </Typography>
+          <Typography sx={{ color: theme.palette.background.first }}>Создать</Typography>
         </Button>
 
-        <Button
-          sx={{
-            ...tabStyle("/documents"),
-            fontSize: 20,
-            textTransform: "none",
-            "&:hover": {
-              backgroundColor: "transparent !important",
-            },
-            color: theme.palette.background.seventh,
-          }}
-          onClick={onDocumentsClick}
-          disableRipple={true}
-        >
-          <Typography sx={{ color: theme.palette.background.first }}>
-            Документы
-          </Typography>
+        <Button sx={tabStyle("/documents")} onClick={onDocumentsClick} disableRipple>
+          <Typography sx={{ color: theme.palette.background.first }}>Документы</Typography>
         </Button>
 
-        <Button
-          sx={{
-            ...tabStyle("/about"),
-            "&:hover": {
-              backgroundColor: "transparent !important",
-            },
-            color: theme.palette.background.seventh,
-          }}
-          onClick={() => navigate("/about")}
-          disableRipple
-        >
-          <Typography sx={{ color: theme.palette.background.first }}>
-            О нас
-          </Typography>
+        <Button sx={tabStyle("/about")} onClick={() => navigate("/about")} disableRipple>
+          <Typography sx={{ color: theme.palette.background.first }}>О нас</Typography>
         </Button>
       </Box>
 
-      <IconButton
-        onClick={openMenu}
-        sx={{
-          color: "text.primary",
-          "&:hover": {
-            backgroundColor: "transparent",
-          },
-        }}
-      >
-        {getThemeIcon()}
-      </IconButton>
+      <Box sx={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <IconButton onClick={openMenu} sx={{ color: "text.primary", "&:hover": { backgroundColor: "transparent" } }}>
+          {getThemeIcon()}
+        </IconButton>
 
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
-        <MenuItem
-          onClick={() => {
-            setMode("light");
-            closeMenu();
-          }}
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={closeMenu}>
+          <MenuItem onClick={() => { setMode("light"); closeMenu(); }}>Светлая</MenuItem>
+          <MenuItem onClick={() => { setMode("dark"); closeMenu(); }}>Темная</MenuItem>
+          <MenuItem onClick={() => { setMode("system"); closeMenu(); }}>Системная</MenuItem>
+        </Menu>
+
+        <Box sx={{ display: "flex", alignItems: "center", gap: "12px", px: "12px", cursor: "pointer" }}
+          onClick={(e) => setUserMenuEl(e.currentTarget)}
         >
-          Светлая
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            setMode("dark");
-            closeMenu();
-          }}
-        >
-          Темная
-        </MenuItem>
-
-        <MenuItem
-          onClick={() => {
-            setMode("system");
-            closeMenu();
-          }}
-        >
-          Системная
-        </MenuItem>
-      </Menu>
-
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-          px: "24px",
-          color: theme.palette.background.first,
-        }}
-      >
-        <Typography fontSize={18}>
-          {user?.name} {user?.surname}
-        </Typography>
-
-        <Box
-          sx={{
-            width: 36,
-            height: 36,
-            borderRadius: "50%",
-            border: "1px solid #ddd",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 14,
-          }}
-        >
-          ИП
+          <Typography fontSize={18} color={theme.palette.background.first}>
+            {user?.name} {user?.surname}
+          </Typography>
+          <Box
+            sx={{
+              width: 36, height: 36, borderRadius: "50%",
+              border: "1px solid #ddd", display: "flex",
+              alignItems: "center", justifyContent: "center", fontSize: 14,
+            }}
+          >
+            {user?.name?.[0] || "Г"}
+          </Box>
         </Box>
+
+        <Menu anchorEl={userMenuEl} open={Boolean(userMenuEl)} onClose={() => setUserMenuEl(null)}>
+          <MenuItem onClick={handleLogout}>Выйти</MenuItem>
+        </Menu>
       </Box>
     </Box>
   );

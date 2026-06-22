@@ -181,7 +181,7 @@ export const DocumentCard = ({
                 ? theme.palette.background.sixth
                 : status === "changed"
                   ? theme.palette.background.eighth
-                  : "#999",
+                  : theme.palette.background.seventh,
           }}
         >
           {status === "signed" && <CheckCircleIcon sx={{ fontSize: 20 }} />}

@@ -21,7 +21,7 @@ type HistoryItem = {
 
 export const EditorPage = () => {
   const navigate = useNavigate();
-  const user = useUser();
+  const { user } = useUser();
   const { id } = useParams();
   const { editorRef } = useEditor();
 

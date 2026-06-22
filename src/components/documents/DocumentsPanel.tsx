@@ -2,7 +2,6 @@ import { Box, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getUserDocuments } from "../../services/documentService";
 import { DocumentCard } from "./DocumentCard";
-import { useNavigate } from "react-router-dom";
 
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
@@ -15,8 +14,7 @@ import { useTheme } from "@mui/material/styles";
 export const DocumentsPanel = ({ open }: any) => {
   const theme = useTheme();
 
-  const user = useUser();
-  const navigate = useNavigate();
+  const { user } = useUser();
   const [documents, setDocuments] = useState([]);
   const [uploadOpen, setUploadOpen] = useState(false);
 

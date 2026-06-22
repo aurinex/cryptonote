@@ -1,7 +1,7 @@
-const API = "http://localhost:8000";
+import { API_BASE } from "./api";
 
 export const createDocument = async (data: any) => {
-  const res = await fetch(`${API}/documents`, {
+  const res = await fetch(`${API_BASE}/documents`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -12,17 +12,17 @@ export const createDocument = async (data: any) => {
 };
 
 export const getDocuments = async () => {
-  const res = await fetch(`${API}/documents`);
+  const res = await fetch(`${API_BASE}/documents`);
   return res.json();
 };
 
 export const getDocument = async (id: string) => {
-  const res = await fetch(`${API}/documents/${id}`);
+  const res = await fetch(`${API_BASE}/documents/${id}`);
   return res.json();
 };
 
 export const saveDocument = async (content: string, author: string) => {
-  const res = await fetch(`${API}/documents`, {
+  const res = await fetch(`${API_BASE}/documents`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export const saveDocument = async (content: string, author: string) => {
 };
 
 export const updateDocument = async (id: string, data: any) => {
-  const res = await fetch(`${API}/documents/${id}`, {
+  const res = await fetch(`${API_BASE}/documents/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -50,7 +50,7 @@ export const updateDocument = async (id: string, data: any) => {
 };
 
 export const signDocument = async (id: string) => {
-  const res = await fetch(`${API}/documents/${id}/sign`, {
+  const res = await fetch(`${API_BASE}/documents/${id}/sign`, {
     method: "POST",
   });
 
@@ -58,7 +58,7 @@ export const signDocument = async (id: string) => {
 };
 
 export const getDocumentByHash = async (hash: string) => {
-  const res = await fetch(`${API}/documents/hash/${hash}`);
+  const res = await fetch(`${API_BASE}/documents/hash/${hash}`);
 
   return res.json();
 };
@@ -68,7 +68,7 @@ export const updateDocumentTitle = async (
   title: string,
   author_id: string,
 ) => {
-  const res = await fetch(`${API}/documents/${id}/title`, {
+  const res = await fetch(`${API_BASE}/documents/${id}/title`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -90,7 +90,7 @@ export const uploadDocument = async (
   formData.append("author_id", author_id);
   formData.append("author", author);
 
-  const res = await fetch(`${API}/documents/upload`, {
+  const res = await fetch(`${API_BASE}/documents/upload`, {
     method: "POST",
     body: formData,
   });
@@ -99,13 +99,13 @@ export const uploadDocument = async (
 };
 
 export const getUserDocuments = async (userId: string) => {
-  const res = await fetch(`${API}/documents/user/${userId}`);
+  const res = await fetch(`${API_BASE}/documents/user/${userId}`);
 
   return res.json();
 };
 
 export const deleteDocument = async (id: string) => {
-  const res = await fetch(`${API}/documents/${id}`, {
+  const res = await fetch(`${API_BASE}/documents/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

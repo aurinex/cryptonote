@@ -30,12 +30,39 @@ const ToolbarGroup = ({ children }: any) => (
   </Box>
 );
 
+const btnSx = {
+  width: "44px",
+  height: "44px",
+  borderRadius: 4,
+  transition: "all 0.3s ease",
+};
+
+const Tb = ({ onClick, active, children, sx }: any) => {
+  const theme = useTheme();
+  return (
+    <IconButton
+      onClick={onClick}
+      sx={{
+        color: theme.palette.background.first,
+        background: active ? theme.palette.background.second : "transparent",
+        ...btnSx,
+        ":hover": {
+          background: "transparent",
+          color: theme.palette.background.hovered,
+        },
+        ...sx,
+      }}
+    >
+      {children}
+    </IconButton>
+  );
+};
+
 export const EditorToolbar = ({
   onSave,
   onSign,
   onExport,
   saveStatus,
-  documentStatus,
 }: any) => {
   const theme = useTheme();
 
@@ -183,14 +210,6 @@ export const EditorToolbar = ({
     setAvailableFonts(available);
   }, []);
 
-  const unorderedList = () => {
-    document.execCommand("insertUnorderedList");
-  };
-
-  const orderedList = () => {
-    document.execCommand("insertOrderedList");
-  };
-
   return (
     <Box
       sx={{
@@ -245,122 +264,22 @@ export const EditorToolbar = ({
             ))}
           </Select>
 
-          <IconButton
-            onClick={onExport}
-            sx={{
-              width: "37px",
-              height: "37px",
-              borderRadius: 4,
-              color: theme.palette.background.first,
-              transition: "all 0.3s ease",
-              ":hover": {
-                background: "transparent",
-                color: theme.palette.background.hovered,
-              },
-            }}
-          >
+          <Tb onClick={onExport} sx={{ width: "37px", height: "37px" }}>
             <PictureAsPdfIcon />
-          </IconButton>
+          </Tb>
         </Box>
 
         <Box sx={{ display: "flex", gap: "8px" }}>
-          <IconButton
-            onClick={() => format("bold")}
-            sx={{
-              background: isBold
-                ? theme.palette.background.second
-                : "transparent",
-              width: "44px",
-              height: "44px",
-              borderRadius: 4,
-              color: theme.palette.background.first,
-              transition: "all 0.3s ease",
-              ":hover": {
-                background: "transparent",
-                color: theme.palette.background.hovered,
-              },
-            }}
-          >
-            <b>Ж</b>
-          </IconButton>
-
-          <IconButton
-            onClick={() => format("italic")}
-            sx={{
-              background: isItalic
-                ? theme.palette.background.second
-                : "transparent",
-              width: "44px",
-              height: "44px",
-              borderRadius: 4,
-              color: theme.palette.background.first,
-              transition: "all 0.3s ease",
-              ":hover": {
-                background: "transparent",
-                color: theme.palette.background.hovered,
-              },
-            }}
-          >
-            <i>К</i>
-          </IconButton>
-
-          <IconButton
-            onClick={() => format("underline")}
-            sx={{
-              background: isUnderline
-                ? theme.palette.background.second
-                : "transparent",
-              width: "44px",
-              height: "44px",
-              borderRadius: 4,
-              color: theme.palette.background.first,
-              transition: "all 0.3s ease",
-              ":hover": {
-                background: "transparent",
-                color: theme.palette.background.hovered,
-              },
-            }}
-          >
-            <u>Ч</u>
-          </IconButton>
+          <Tb onClick={() => format("bold")} active={isBold}><b>Ж</b></Tb>
+          <Tb onClick={() => format("italic")} active={isItalic}><i>К</i></Tb>
+          <Tb onClick={() => format("underline")} active={isUnderline}><u>Ч</u></Tb>
 
           <Divider orientation="vertical" flexItem />
 
           <ToolbarGroup>
             <Box sx={{ display: "flex", gap: "8px" }}>
-              <IconButton
-                onClick={() => format("indent")}
-                sx={{
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: 4,
-                  color: theme.palette.background.first,
-                  transition: "all 0.3s ease",
-                  ":hover": {
-                    background: "transparent",
-                    color: theme.palette.background.hovered,
-                  },
-                }}
-              >
-                <FormatTextdirectionLToRIcon />
-              </IconButton>
-
-              <IconButton
-                onClick={() => format("outdent")}
-                sx={{
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: 4,
-                  color: theme.palette.background.first,
-                  transition: "all 0.3s ease",
-                  ":hover": {
-                    background: "transparent",
-                    color: theme.palette.background.hovered,
-                  },
-                }}
-              >
-                <FormatTextdirectionRToLIcon />
-              </IconButton>
+              <Tb onClick={() => format("indent")}><FormatTextdirectionLToRIcon /></Tb>
+              <Tb onClick={() => format("outdent")}><FormatTextdirectionRToLIcon /></Tb>
             </Box>
           </ToolbarGroup>
         </Box>
@@ -372,101 +291,14 @@ export const EditorToolbar = ({
 
       <ToolbarGroup>
         <Box sx={{ display: "flex", gap: "8px" }}>
-          <IconButton
-            onClick={() => format("insertUnorderedList")}
-            sx={{
-              width: "44px",
-              height: "44px",
-              borderRadius: 4,
-              color: theme.palette.background.first,
-              transition: "all 0.3s ease",
-              ":hover": {
-                background: "transparent",
-                color: theme.palette.background.hovered,
-              },
-            }}
-          >
-            <FormatListBulletedIcon />
-          </IconButton>
-
-          <IconButton
-            onClick={() => format("insertOrderedList")}
-            sx={{
-              width: "44px",
-              height: "44px",
-              borderRadius: 4,
-              color: theme.palette.background.first,
-              transition: "all 0.3s ease",
-              ":hover": {
-                background: "transparent",
-                color: theme.palette.background.hovered,
-              },
-            }}
-          >
-            <FormatListNumberedIcon />
-          </IconButton>
+          <Tb onClick={() => format("insertUnorderedList")}><FormatListBulletedIcon /></Tb>
+          <Tb onClick={() => format("insertOrderedList")}><FormatListNumberedIcon /></Tb>
         </Box>
 
         <Box sx={{ display: "flex", gap: "8px" }}>
-          <IconButton
-            onClick={() => format("justifyLeft")}
-            sx={{
-              background: alignLeft
-                ? theme.palette.background.second
-                : "transparent",
-              width: "44px",
-              height: "44px",
-              borderRadius: 4,
-              color: theme.palette.background.first,
-              transition: "all 0.3s ease",
-              ":hover": {
-                background: "transparent",
-                color: theme.palette.background.hovered,
-              },
-            }}
-          >
-            <AlignHorizontalLeftIcon />
-          </IconButton>
-
-          <IconButton
-            onClick={() => format("justifyCenter")}
-            sx={{
-              background: alignCenter
-                ? theme.palette.background.second
-                : "transparent",
-              width: "44px",
-              height: "44px",
-              borderRadius: 4,
-              color: theme.palette.background.first,
-              transition: "all 0.3s ease",
-              ":hover": {
-                background: "transparent",
-                color: theme.palette.background.hovered,
-              },
-            }}
-          >
-            <AlignHorizontalCenterIcon />
-          </IconButton>
-
-          <IconButton
-            onClick={() => format("justifyRight")}
-            sx={{
-              background: alignRight
-                ? theme.palette.background.second
-                : "transparent",
-              width: "44px",
-              height: "44px",
-              borderRadius: 4,
-              color: theme.palette.background.first,
-              transition: "all 0.3s ease",
-              ":hover": {
-                background: "transparent",
-                color: theme.palette.background.hovered,
-              },
-            }}
-          >
-            <AlignHorizontalRightIcon />
-          </IconButton>
+          <Tb onClick={() => format("justifyLeft")} active={alignLeft}><AlignHorizontalLeftIcon /></Tb>
+          <Tb onClick={() => format("justifyCenter")} active={alignCenter}><AlignHorizontalCenterIcon /></Tb>
+          <Tb onClick={() => format("justifyRight")} active={alignRight}><AlignHorizontalRightIcon /></Tb>
         </Box>
       </ToolbarGroup>
 
@@ -475,96 +307,20 @@ export const EditorToolbar = ({
       {/* GROUP 4 — COLORS */}
 
       <ToolbarGroup>
-        {/* TEXT COLOR */}
-
         <Box sx={{ position: "relative" }}>
-          <input
-            ref={textColorRef}
-            type="color"
-            value={textColor}
-            onChange={(e) => {
-              setTextColor(e.target.value);
-              document.execCommand("foreColor", false, e.target.value);
-            }}
-            style={{
-              position: "absolute",
-              opacity: 0,
-              width: 0,
-              height: 0,
-            }}
-          />
-
-          <IconButton
-            onClick={() => textColorRef.current?.click()}
-            sx={{
-              width: "44px",
-              height: "44px",
-              borderRadius: 2,
-              position: "relative",
-              color: theme.palette.background.first,
-              "&:hover": { background: "transparent" },
-            }}
-          >
+          <input ref={textColorRef} type="color" value={textColor} onChange={(e) => { setTextColor(e.target.value); document.execCommand("foreColor", false, e.target.value); }} style={{ position: "absolute", opacity: 0, width: 0, height: 0 }} />
+          <Tb onClick={() => textColorRef.current?.click()} sx={{ borderRadius: 2, position: "relative" }}>
             <FormatColorTextIcon />
-
-            {/* COLOR BAR */}
-
-            <Box
-              sx={{
-                position: "absolute",
-                bottom: 10,
-                width: 20,
-                height: 4,
-                background: textColor,
-              }}
-            />
-          </IconButton>
+            <Box sx={{ position: "absolute", bottom: 10, width: 20, height: 4, background: textColor }} />
+          </Tb>
         </Box>
 
-        {/* BG COLOR */}
-
         <Box sx={{ position: "relative" }}>
-          <input
-            ref={bgColorRef}
-            type="color"
-            value={bgColor}
-            onChange={(e) => {
-              setBgColor(e.target.value);
-              document.execCommand("hiliteColor", false, e.target.value);
-            }}
-            style={{
-              position: "absolute",
-              opacity: 0,
-              width: 0,
-              height: 0,
-            }}
-          />
-
-          <IconButton
-            onClick={() => bgColorRef.current?.click()}
-            sx={{
-              width: "44px",
-              height: "44px",
-              borderRadius: 2,
-              position: "relative",
-              color: theme.palette.background.first,
-              "&:hover": { background: "transparent" },
-            }}
-          >
+          <input ref={bgColorRef} type="color" value={bgColor} onChange={(e) => { setBgColor(e.target.value); document.execCommand("hiliteColor", false, e.target.value); }} style={{ position: "absolute", opacity: 0, width: 0, height: 0 }} />
+          <Tb onClick={() => bgColorRef.current?.click()} sx={{ borderRadius: 2, position: "relative" }}>
             <FormatColorFillIcon />
-
-            {/* COLOR BAR */}
-
-            <Box
-              sx={{
-                position: "absolute",
-                bottom: 10,
-                width: 20,
-                height: 4,
-                background: bgColor,
-              }}
-            />
-          </IconButton>
+            <Box sx={{ position: "absolute", bottom: 10, width: 20, height: 4, background: bgColor }} />
+          </Tb>
         </Box>
       </ToolbarGroup>
 
@@ -624,7 +380,7 @@ export const EditorToolbar = ({
           <Typography
             sx={{
               fontSize: 14,
-              color: "#888",
+              color: theme.palette.background.seventh,
             }}
           >
             {saveStatus}

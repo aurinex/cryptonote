@@ -12,7 +12,7 @@ export const A4Viewer = ({ content }: any) => {
         p: "40px",
         fontFamily: "Montserrat",
         border: `1px solid ${theme.palette.background.nineth}`,
-        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(0,0,0,0.5)" : "0 2px 8px rgba(0,0,0,0.1)",
       }}
       dangerouslySetInnerHTML={{ __html: content }}
     />

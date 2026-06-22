@@ -2,6 +2,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { hashDocument } from "./hashDocument";
 import QRCode from "qrcode";
+import { getVerifyUrl } from "../services/api";
 
 import { loadPdfFont } from "./pdfFont";
 
@@ -9,7 +10,20 @@ export const exportPDF = async (editor: HTMLElement, signedAt?: string) => {
   const text = editor.innerText;
   const hash = await hashDocument(text);
 
-  const canvas = await html2canvas(editor, { scale: 2 });
+  const canvas = await html2canvas(editor, {
+    scale: 2,
+    backgroundColor: "#ffffff",
+    useCORS: true,
+    logging: false,
+    onclone: (doc) => {
+      const el = doc.querySelector("[contenteditable]");
+      if (el) {
+        el.removeAttribute("contenteditable");
+        (el as HTMLElement).style.color = "#000000";
+        (el as HTMLElement).style.background = "#ffffff";
+      }
+    },
+  });
   const imgData = canvas.toDataURL("image/png");
 
   const pdf = new jsPDF("p", "mm", "a4");
@@ -46,7 +60,7 @@ export const exportPDF = async (editor: HTMLElement, signedAt?: string) => {
 
     /* ---------- QR CODE ---------- */
 
-    const qrData = `http://localhost:5173/verify/${hash}`;
+    const qrData = getVerifyUrl(hash);
     const qrImage = await QRCode.toDataURL(qrData);
 
     /* ---------- SIGNATURE BOX ---------- */

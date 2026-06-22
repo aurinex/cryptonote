@@ -25,7 +25,7 @@ export const ThemeProvider = ({ children }: any) => {
       ? "dark"
       : "light";
 
-  const [systemTheme, setSystemTheme] = useState(getSystemTheme());
+  const [systemTheme, setSystemTheme] = useState<"light" | "dark">(getSystemTheme());
 
   useEffect(() => {
     const media = window.matchMedia("(prefers-color-scheme: dark)");
@@ -39,7 +39,7 @@ export const ThemeProvider = ({ children }: any) => {
     return () => media.removeEventListener("change", listener);
   }, []);
 
-  const actualMode = mode === "system" ? systemTheme : mode;
+  const actualMode: "light" | "dark" = mode === "system" ? systemTheme : mode;
 
   const theme = useMemo(
     () =>
@@ -47,7 +47,7 @@ export const ThemeProvider = ({ children }: any) => {
         palette: {
           mode: actualMode,
           background: {
-            first: actualMode === "dark" ? "#ffffffff" : "#000000ff",
+            first: actualMode === "dark" ? "#ffffff" : "#000000",
             second: actualMode === "dark" ? "#525060" : "#EAEAEA",
             third: actualMode === "dark" ? "#2D2C35" : "#FFFFFF",
             fourth: actualMode === "dark" ? "#2A2932" : "#FBFBFB",
@@ -56,10 +56,10 @@ export const ThemeProvider = ({ children }: any) => {
             seventh: actualMode === "dark" ? "#696969" : "#D9D9D9",
             eighth: actualMode === "dark" ? "#C06000" : "#F0AF20",
             nineth: actualMode === "dark" ? "#222227" : "#FFFFFF",
-            hovered: actualMode === "dark" ? "#87859eff" : "#696777ff",
-            inversion: actualMode === "dark" ? "#000000ff" : "#ffffffff",
+            hovered: actualMode === "dark" ? "#87859E" : "#696777",
+            inversion: actualMode === "dark" ? "#000000" : "#ffffff",
 
-            default: actualMode === "dark" ? "#34333eff" : "#FFFFFF",
+            default: actualMode === "dark" ? "#34333E" : "#FFFFFF",
             paper: actualMode === "dark" ? "#2D2C35" : "#FFFFFF",
           },
         },

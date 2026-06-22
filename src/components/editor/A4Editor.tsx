@@ -12,12 +12,8 @@ export const A4Editor = ({
   onSave,
   onSign,
   saveStatus,
-  documentStatus,
   history,
-  documentHash,
   signedAt,
-  title,
-  setTitle,
 }: any) => {
   const theme = useTheme();
 
@@ -73,9 +69,6 @@ export const A4Editor = ({
         onSign={onSign}
         onExport={handleExport}
         saveStatus={saveStatus}
-        documentStatus={documentStatus}
-        title={title}
-        setTitle={setTitle}
       />
 
       <Box
@@ -94,7 +87,7 @@ export const A4Editor = ({
             position: "relative",
             overflow: "clip",
             border: `1px solid ${theme.palette.background.nineth}`,
-            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            boxShadow: theme.palette.mode === "dark" ? "0 2px 8px rgba(0,0,0,0.5)" : "0 2px 8px rgba(0,0,0,0.1)",
           }}
         >
           {/* EDITOR */}
@@ -120,7 +113,7 @@ export const A4Editor = ({
       )
     `,
 
-              boxShadow: "0 0 3px rgba(0,0,0,0.15)",
+              boxShadow: theme.palette.mode === "dark" ? "0 0 3px rgba(0,0,0,0.5)" : "0 0 3px rgba(0,0,0,0.15)",
             })}
           />
 
@@ -136,7 +129,7 @@ export const A4Editor = ({
                 width: "100%",
                 textAlign: "center",
                 fontSize: 14,
-                color: "#888",
+                color: theme.palette.background.seventh,
                 pointerEvents: "none",
               }}
             >
@@ -146,33 +139,21 @@ export const A4Editor = ({
         </Box>
       </Box>
 
-      {/* HISTORY */}
-
-      <Box
-        sx={{
-          width: 800,
-          margin: "0 auto",
-          mt: 4,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Box sx={{ width: 450 }}>
-          <HistoryTimeline history={history} />
+      {history?.length > 0 && (
+        <Box
+          sx={{
+            width: 800,
+            margin: "0 auto",
+            mt: 4,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Box sx={{ width: 450 }}>
+            <HistoryTimeline history={history} />
+          </Box>
         </Box>
-
-        <Box>
-          <Typography variant="h6" sx={{ mb: 2 }}>
-            История документа
-          </Typography>
-
-          {history?.map((item: any) => (
-            <Typography key={item.date} sx={{ fontSize: 14, color: "#555" }}>
-              {new Date(item.date).toLocaleString()} — {item.action}
-            </Typography>
-          ))}
-        </Box>
-      </Box>
+      )}
     </>
   );
 };

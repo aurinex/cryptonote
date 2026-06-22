@@ -1,6 +1,5 @@
 // ContextMenu.tsx
 import { Menu, MenuItem } from "@mui/material";
-import { useState } from "react";
 
 interface ContextMenuProps {
   open: boolean;
@@ -50,7 +49,7 @@ export const ContextMenu = ({
           📥 Скачать
         </MenuItem>
       )}
-      <MenuItem onClick={onDelete} sx={{ py: 1.5, color: "#d32f2f" }}>
+      <MenuItem onClick={onDelete} sx={{ py: 1.5, color: "error.main" }}>
         🗑️ Удалить
       </MenuItem>
     </Menu>

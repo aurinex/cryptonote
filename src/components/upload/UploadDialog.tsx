@@ -12,7 +12,7 @@ import { useTheme } from "@mui/material";
 
 export const UploadDialog = ({ open, onClose }: any) => {
   const theme = useTheme();
-  const user = useUser();
+  const { user } = useUser();
   const navigate = useNavigate();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
